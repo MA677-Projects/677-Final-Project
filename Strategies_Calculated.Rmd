@@ -1,0 +1,77 @@
+---
+title: "Strategies"
+output: html_document
+date: "2024-05-07"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r}
+#Writing the strategies as vectors
+
+strat_matrix<- matrix(data=c(1,1,1,
+                        1,1,2,
+                        1,1,3,
+                        1,2,1,
+                        1,2,2,
+                        1,2,3,
+                        1,3,1,
+                        1,3,2,
+                        1,3,3,
+                        2,1,1,
+                        2,1,2,
+                        2,1,3,
+                        2,2,1,
+                        2,2,2,
+                        2,2,3,
+                        2,3,1,
+                        2,3,2,
+                        2,3,3,
+                        3,1,1,
+                        3,1,2,
+                        3,1,3,
+                        3,2,1,
+                        3,2,2,
+                        3,2,3,
+                        3,3,1,
+                        3,3,2,
+                        3,3,3),nrow=27, byrow=TRUE)
+
+colnames<-c("x1","x2","x3")
+strat<-strat_matrix |> data.frame() |> setNames(colnames)
+```
+
+```{r}
+#Code to create the expected losses from strategies
+cols<-c("s1","s2","s3","s4","s5","s6","s7","s8","s9","s10","s11","s12","s13","s14",
+       "s15","s16","s17","s18","s19","s20","s21","s22","s23","s24","s25","s26","s27")
+mat<-matrix(rep(0,81),nrow=3)
+expected_losses<-mat |> data.frame() |> setNames(cols)
+
+utility<- matrix(c(0,1,7,4,3,4,9,5,2),nrow=3,byrow=TRUE) |> data.frame() |> setNames(c("a1","a2","a3"))
+for(i in 1:3){
+  for(j in 1:27){
+    if(i==1){
+      x1<-0.6*utility[i,strat[j,1]]
+      x2<-0.25*utility[i,strat[j,2]]
+      x3<-0.15*utility[i,strat[j,3]]
+    }
+    else if(i==2){
+      x1<-0.2*utility[i,strat[j,1]]
+      x2<-0.30*utility[i,strat[j,2]]
+      x3<-0.50*utility[i,strat[j,3]]
+    }
+    else{
+      x1<-0.05*utility[i,strat[j,1]]
+      x2<-0.27*utility[i,strat[j,2]]
+      x3<-0.68*utility[i,strat[j,3]]
+    }
+    
+    expected_losses[i,j]<-x1+x2+x3
+  }
+}
+```
+
